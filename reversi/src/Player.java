@@ -1,12 +1,18 @@
 import java.util.Scanner;
 
+// This is class of common player (human-player).
 public final class Player extends AbstractPlayer {
+    // This is constructor.
+    // colorOfPlayer - color of current Player.
     public Player(int colorOfPlayer) {
         color = colorOfPlayer;
     }
 
+    // This is overrided which realize the step by human-player.
+    // field - game field.
+    // returns the coordinate of cell on which player did step of -1 if there's no available step.
     public int doStep(int[][] field) {
-        if (countCellsOfMyColor(field) == 0) {
+        if (countScore(field) == 0) {
             return -1;
         }
         if (!canDoStep(field)) {
@@ -29,6 +35,7 @@ public final class Player extends AbstractPlayer {
         return (x - 1) * 8 + (y - 1);
     }
 
+    // This is overrided method, returns false because human-player is not bot.
     public boolean isBot() {
         return false;
     }

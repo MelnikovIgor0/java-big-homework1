@@ -1,6 +1,12 @@
+
+// This is class of abstract player, which includes functionality common to all players.
 public abstract class AbstractPlayer {
+    // This is variable for color of person.
     protected int color;
 
+    // This method returns color of cell on field.
+    // field - game field.
+    // (x, y) - coordinates of step.
     private int getCell(int[][] field, int x, int y) {
         if (x < 0 || y < 0 || x > 7 || y > 7) {
             return -1;
@@ -8,6 +14,11 @@ public abstract class AbstractPlayer {
         return field[x][y];
     }
 
+    // This method returns the number of cells recolored by this step in specified direction.
+    // field - the game field.
+    // (x, y) - coordinates of step.
+    // (dx, dy) - direction for count the number of recolored cells.
+    // returns the number of cells recolored by this step in specified direction.
     private int getAmountClosed(int[][] field, int x, int y, int dx, int dy) {
         int amountOtherColor = 0;
         while (true) {
@@ -25,6 +36,10 @@ public abstract class AbstractPlayer {
         }
     }
 
+    // This method checks is specified step valid for current user.
+    // field - game field.
+    // (x, y) - coordinates of step.
+    // returns boolean value, is current step valid.
     protected boolean isStepValid(int[][] field, int stepX, int stepY) {
         if (stepX < 1 || stepX > 8 || stepY < 1 || stepY > 8) {
             return false;
@@ -55,6 +70,9 @@ public abstract class AbstractPlayer {
         return false;
     }
 
+    // This method checks if current player can do at least one valid step on game field.
+    // field - game field.
+    // return boolean value, can player do at least one step.
     public boolean canDoStep(int[][] field) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -66,6 +84,9 @@ public abstract class AbstractPlayer {
         return false;
     }
 
+    // This method counts score of current user.
+    // field - game field.
+    // return the score value.
     public int countScore(int[][] field) {
         int score = 0;
         for (int i = 0; i < 8; i++) {
@@ -78,18 +99,9 @@ public abstract class AbstractPlayer {
         return score;
     }
 
-    protected int countCellsOfMyColor(int[][] field) {
-        int kol = 0;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (field[i][j] == color) {
-                    kol++;
-                }
-            }
-        }
-        return kol;
-    }
-
+    // This method prints game field.
+    // field - game field.
+    // nextSteps - should be highlited cells where current player can do step.
     public void printField(int[][] field, boolean nextSteps) {
         for (int i = 0; i < 3; i++) {
             System.out.println();
@@ -134,7 +146,11 @@ public abstract class AbstractPlayer {
         }
     }
 
+    // This is abstract method which should be overrided which should and realize the step by player.
+    // field - game field.
+    // returns the number of cell on which player did step.
     public abstract int doStep(int[][] field);
 
+    // This method returns boolean value, is current player bot.
     public abstract boolean isBot();
 }

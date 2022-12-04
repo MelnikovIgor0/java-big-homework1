@@ -1,8 +1,16 @@
-public class Bot extends AbstractPlayer {
+// This is class of bot-player
+public final class Bot extends AbstractPlayer {
+    // This is constructor.
+    // colorOfPlayer - color of current Player.
     public Bot(int colorOfPlayer) {
         color = colorOfPlayer;
     }
 
+    // This method evaluates score by probable step in specified direction.
+    // field - game field.
+    // (x, y) - coordinates of step.
+    // (dx, dy) direction, which should be evaluated.
+    // return double value, scoring of specified step.
     private double evaluateStepDirection(int[][] field, int x, int y, int dx, int dy) {
         double score = 0;
         while (true) {
@@ -24,6 +32,10 @@ public class Bot extends AbstractPlayer {
         }
     }
 
+    // This method evaluates specified step fully.
+    // field - game field.
+    // (x, y) - coordinates of step.
+    // return double value, scoring of specified step.
     private double evaluateStep(int[][] field, int x, int y) {
         double score = 0;
         if ((x == 0 && y == 0) || (x == 0 && y == 7) || (x == 7 && y == 0) || (x == 7 && y == 7)) {
@@ -41,8 +53,11 @@ public class Bot extends AbstractPlayer {
         return score;
     }
 
+    // This is overrided which realize the step by bot-player.
+    // field - game field.
+    // returns the coordinate of cell on which player did step of -1 if there's no available step.
     public int doStep(int[][] field) {
-        if (countCellsOfMyColor(field) == 0) {
+        if (countScore(field) == 0) {
             return -1;
         }
         if (!canDoStep(field)) {
@@ -64,6 +79,7 @@ public class Bot extends AbstractPlayer {
         return bestPosition;
     }
 
+    // This is overrided method, returns false because bot-player is bot.
     public boolean isBot() {
         return true;
     }

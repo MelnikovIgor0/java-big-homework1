@@ -1,12 +1,19 @@
 import java.util.Scanner;
 import java.util.Stack;
 
+// Main class, solution.
 public class Main {
+    // First player of game.
     private static AbstractPlayer player1;
+    // Second player of game.
     private static AbstractPlayer player2;
+    // Stack of field conditions, using which we can cancel previous steps.
     private static Stack<int[][]> fieldCondition = new Stack<int[][]>();
+    // Highest score earned by human-player.
     private static int MaxScore = 0;
 
+    // This method shows main menu of game (user can choose game mod, see top score).
+    // returns boolean value, should not program stop or should.
     private static boolean showMenu() {
         System.out.println("Welcome to 'reversi' game!!!");
         player1 = new Player(1);
@@ -32,6 +39,11 @@ public class Main {
         return (mode != 3);
     }
 
+    // This method recolors cells on field after step in specified direction.
+    // field - game field, (x, y) - coordinates of step.
+    // color - color of player who did step (1 or 2); (dx, dy) - direction for recoloring.
+    // Method does nothing if from current position moving in specified direction.
+    // there's no cell colored in color of current player.
     private static void recolorField(int[][] field, int x, int y, int color, int dx, int dy) {
         int amountOtherColor = 0;
         int cx = x, cy = y;
@@ -67,6 +79,9 @@ public class Main {
         }
     }
 
+    // This method returns deep copy of array.
+    // field - input game field.
+    // returns deep copy of specified field.
     private static int[][] getDeepCopy(int[][] field) {
         int[][] copy = new int[8][8];
         for (int i = 0; i < 8; i++) {
@@ -77,6 +92,11 @@ public class Main {
         return copy;
     }
 
+    // This method recolors cells on field after step.
+    // field - game field.
+    // (stepX, stepY) - coordinates of step.
+    // color - color of player who did step (1 or 2).
+    // returns recolored new field after recoloring step in one direction.
     private static int[][] recolorField(int[][] field, int stepX, int stepY, int color) {
         int[][] fieldCopy = getDeepCopy(field);
         fieldCopy[stepX][stepY] = color;
@@ -90,6 +110,10 @@ public class Main {
         return fieldCopy;
     }
 
+    // This method processes possible human-player actions during his step.
+    // player - human-player, who is doing step.
+    // condition - flag for displaying which player plays now.
+    // returns type of action which user wants to do or -1 if there's no available steps.
     private static int stepForHuman(Player player, boolean condition) {
         if (!player.canDoStep(fieldCondition.peek())) {
             System.out.println("Step skipped because there's no available steps!");
@@ -115,6 +139,9 @@ public class Main {
         return mode;
     }
 
+    // This method makes a bot move.
+    // Bot - bot-player, who makes step.
+    // returns type of action which bot wants to do or -1 if there's no available steps.
     private static int stepForBot(Bot bot) {
         int position = bot.doStep(fieldCondition.peek());
         if (position == -1) {
@@ -126,6 +153,7 @@ public class Main {
         return 1;
     }
 
+    // This method clears game field.
     private static void resetField() {
         fieldCondition.clear();
         int[][] startField = new int[8][8];
@@ -141,6 +169,8 @@ public class Main {
         fieldCondition.push(startField);
     }
 
+    // This method prints list of all possible steps for specified player.
+    // player - player, possible steps of whom should be printed.
     private static void printPossibleSteps(AbstractPlayer player) {
         System.out.println("Possible steps:");
         for (int i = 1; i <= 8; i++) {
@@ -152,6 +182,8 @@ public class Main {
         }
     }
 
+    // This method manages all game process, changes actual active (doing actions on field) player,
+    // calls other methods to display information about game condition.
     private static void gameProcess() {
         resetField();
         Scanner in = new Scanner(System.in);
@@ -244,6 +276,7 @@ public class Main {
         }
     }
 
+    // This method sums up results of game, print scores, updates maximum score earned by human-player.
     private static void gameFinished() {
         System.out.println("Game finished!!!");
         System.out.println("Score (X: " + Integer.toString(player1.countScore(fieldCondition.peek())) +
@@ -263,6 +296,8 @@ public class Main {
         }
     }
 
+    // This method is the main method of program, it manages game opening menu,
+    // game process and finishing game methods.
     public static void main(String[] args) {
         while (showMenu()) {
             gameProcess();
